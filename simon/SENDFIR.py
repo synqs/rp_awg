@@ -27,7 +27,7 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 if len(sys.argv)<2:
-    print ""
+    print("test")
     print ""
     print ""
     print bcolors.OKBLUE + "proper usage: " + bcolors.ENDC + "python SendFIR.py FIR_coeffs=THE_FILE_NAME_HERE RP_IP=RP.IP.ADDRESS.HERE OutputShift=SHIFTBITS FIR_prescale=ScaleFact"
