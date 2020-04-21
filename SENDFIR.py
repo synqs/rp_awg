@@ -27,30 +27,30 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 if len(sys.argv)<2:
-    print("test")
-    print ""
-    print ""
-    print bcolors.OKBLUE + "proper usage: " + bcolors.ENDC + "python SendFIR.py FIR_coeffs=THE_FILE_NAME_HERE RP_IP=RP.IP.ADDRESS.HERE OutputShift=SHIFTBITS FIR_prescale=ScaleFact"
-    print bcolors.OKBLUE + "example:      " + bcolors.ENDC + "python SendFIR.py FIR_coeffs=FIRcoeffs.csv RP_IP=192.168.0.1 OutputShift=12 FIR_prescale=22400"
-    print ""
-    print bcolors.HEADER + bcolors.BOLD + "----------PARAMETER DESCRIPTIONS----------" + bcolors.ENDC
-    print bcolors.FAIL + "FIR_coeffs (DEFAULT: FIRcoeffs.csv)" + bcolors.ENDC + "-- the csv file containing the time series of FIR coefficients, on an (assumed) 4.1uS clock. Coefficients are stored as 18-bit fixed pt #s."
-    print ""
-    print bcolors.FAIL + "RP_IP (DEFAULT: 192.168.0.100)" + bcolors.ENDC + "     -- the IP address of the Red Pitaya Board. This may be ascertained using discovery.redpitaya.com and entering the board's MAC address, or through your router settings."
-    print ""
-    print bcolors.FAIL + "OutputShift (DEFAULT: 12)" + bcolors.ENDC + "          -- the number of bits to right-shift the FIR final output before sending it to the 14-bit DAC (intermediate computations are 50-bits)"
-    print ""
-    print bcolors.FAIL + "FIR_prescale (DEFAULT: 12345)" + bcolors.ENDC + "        -- a prescalar applied to the FIR coefficients in FIR_coeff, employed to make optimal use of the 18bit storage of the coefficients."
-    print ""
-    print bcolors.HEADER + bcolors.BOLD + "========GUIDANCE ON PROPER VALUES=========" + bcolors.ENDC
-    print "FIRcoeffs and FIR_prescale should work together to ensure that the 'maximum value' output is near, but less than or equal to, 2^17-1=131071; this maximizes the dynamic range of the FILTER on the FPGA"
-    print ""
-    print "OutputShift should be chosen to ensure that for the maximum ADC input (which is ~+/-1V), we achieve the maximum DAC output-- this is of course freq. dependent, so for lockboxes I suggest this at DC/low freq."
-    print ""
-    print "This sets the total Red Pitaya gain at DC to near unity-- the signal should be conditioned (amplifier and anti-aliasing filter @ ~125kHz) before the RP to fill the full input range, and then post-filtered (amplitude, and LPF) to get size right again!"
-    print ""
-    print ""
-    print ""
+    print("")
+    print("")
+    print("")
+    print(bcolors.OKBLUE + "proper usage: " + bcolors.ENDC + "python SendFIR.py FIR_coeffs=THE_FILE_NAME_HERE RP_IP=RP.IP.ADDRESS.HERE OutputShift=SHIFTBITS FIR_prescale=ScaleFact")
+    print(bcolors.OKBLUE + "example:      " + bcolors.ENDC + "python SendFIR.py FIR_coeffs=FIRcoeffs.csv RP_IP=192.168.0.1 OutputShift=12 FIR_prescale=22400")
+    print("")
+    print(bcolors.HEADER + bcolors.BOLD + "----------PARAMETER DESCRIPTIONS----------" + bcolors.ENDC)
+    print(bcolors.FAIL + "FIR_coeffs (DEFAULT: FIRcoeffs.csv)" + bcolors.ENDC + "-- the csv file containing the time series of FIR coefficients, on an (assumed) 4.1uS clock. Coefficients are stored as 18-bit fixed pt #s.")
+    print("")
+    print(bcolors.FAIL + "RP_IP (DEFAULT: 192.168.0.100)" + bcolors.ENDC + "     -- the IP address of the Red Pitaya Board. This may be ascertained using discovery.redpitaya.com and entering the board's MAC address, or through your router settings.")
+    print("")
+    print(bcolors.FAIL + "OutputShift (DEFAULT: 12)" + bcolors.ENDC + "          -- the number of bits to right-shift the FIR final output before sending it to the 14-bit DAC (intermediate computations are 50-bits)")
+    print("")
+    print(bcolors.FAIL + "FIR_prescale (DEFAULT: 12345)" + bcolors.ENDC + "        -- a prescalar applied to the FIR coefficients in FIR_coeff, employed to make optimal use of the 18bit storage of the coefficients.")
+    print("")
+    print(bcolors.HEADER + bcolors.BOLD + "========GUIDANCE ON PROPER VALUES=========" + bcolors.ENDC)
+    print("FIRcoeffs and FIR_prescale should work together to ensure that the 'maximum value' output is near, but less than or equal to, 2^17-1=131071; this maximizes the dynamic range of the FILTER on the FPGA")
+    print("")
+    print("OutputShift should be chosen to ensure that for the maximum ADC input (which is ~+/-1V), we achieve the maximum DAC output-- this is of course freq. dependent, so for lockboxes I suggest this at DC/low freq.")
+    print("")
+    print("This sets the total Red Pitaya gain at DC to near unity-- the signal should be conditioned (amplifier and anti-aliasing filter @ ~125kHz) before the RP to fill the full input range, and then post-filtered (amplitude, and LPF) to get size right again!")
+    print("")
+    print("")
+    print("")
     exit()
 
 
@@ -84,7 +84,7 @@ def getparmval(strIn,parmname,defaultval):
         outval=strlist[0]
     else:
         outval=defaultval
-    print parmname+": "+outval
+    print(parmname+": "+outval)
     return outval
 
 def getparmval_int(strIn,parmname,defaultval):
@@ -93,14 +93,14 @@ def getparmval_int(strIn,parmname,defaultval):
         outval=int(strlist[0])
     else:
         outval=int(defaultval)
-    print parmname+": "+str(outval)
+    print(parmname+": "+str(outval))
     return outval
-        
+
 cmdstr=""
 for tARG in sys.argv:
     cmdstr=cmdstr+" "+tARG
 
-#Extract Control Parameters    
+#Extract Control Parameters
 REDPITAYA_IP = getparmval(cmdstr, "RP_IP","192.168.0.100")
 theshift = getparmval_int(cmdstr, "Outputshift","12")
 theprefactor = getparmval_int(cmdstr, "FIR_prescale","12345")
@@ -139,9 +139,8 @@ def sendpitayaarray (addr, dats): #WRITE THE FIR COEFFICIENTS IN THE LARGEST BLO
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # Connect the socket to the port where the server is listening
 server_address = (REDPITAYA_IP, 10000)
-print >>sys.stderr, 'connecting to %s port %s' % server_address
+print('connecting to %s port %s' % server_address, file=sys.stderr)
 sock.connect(server_address)
-
 
 JSocket.write_msg(sock, LEDADDRESS, 0)               #DAC/ADC behave better with LEDS off! WEIRD!
 sendpitaya(OUTPUTBITSHIFTADDRESS,theshift)   #right-shift by 15 bits before outputting result!
@@ -164,6 +163,6 @@ sendpitayaarray(FIRCOEFFSADDRESS,thearray)
 JSocket.write_msg(sock, VNAftwADDRESS, 0)
 sendpitaya(VNAampOUTADDRESS, -10) #more bits than DAC
 
-print "maximum value: ",maxval, "\n"
+print("maximum value: ",maxval, "\n")
 JSocket.write_done(sock)
 sock.close()

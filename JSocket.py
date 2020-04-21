@@ -25,19 +25,19 @@ def int2base(x,b,alphabet='0123456789abcdefghijklmnopqrstuvwxyz'):
     return rets
 
 def read_mem( s, addr ):
-    s.sendall('r'+struct.pack('<I',addr))
+    s.sendall(bytes('r', 'utf-8')+struct.pack('<I',addr))
     message=rcv_msg(s)
     return struct.unpack('<I',message[2])[0]
 
 def write_msg( s, addr, val ): #write one word (4 bytes)
-    s.sendall('w'+struct.pack('<I',addr)+struct.pack('<I',val))
+    s.sendall(bytes('w', 'utf-8')+struct.pack('<I',addr)+struct.pack('<I',val))
 
 def writeS_msg( s, addr, vals ): #write N words (4N bytes)-- vals is an array of words
-    v1='W'+struct.pack('<I',addr)+struct.pack('<I',4*len(vals))+struct.pack('<'+('I' * len(vals)), *vals)
+    v1=bytes('W', 'utf-8')+struct.pack('<I',addr)+struct.pack('<I',4*len(vals))+struct.pack('<'+('I' * len(vals)), *vals)
     s.sendall(v1)
 
-def write_done( s ): 
-    s.sendall('Q    ')
+def write_done( s ):
+    s.sendall(bytes('Q    ', 'utf-8'))
 
 def recv_len(s,l): #receive data of length l from socket s
     data="";
@@ -45,7 +45,7 @@ def recv_len(s,l): #receive data of length l from socket s
     while(lremaining>0):
         newdat=s.recv(lremaining)
         if newdat=="":
-            print "disconnected!"
+            print("disconnected!")
             raise Exception('Socket Closed!')
         data+=newdat
         lremaining=l-len(data)
@@ -58,9 +58,9 @@ def rcv_msg( s ):
     listlenLEN=4 #four bytes to describe length of list (in bytes) to follow!
     datatype=recv_len(s,1)[0]
     dataADDR,=struct.unpack('<I',recv_len(s,addrLEN))
-    print "dataADDR is: 0x" + int2base(dataADDR,16)
+    print("dataADDR is: 0x" + int2base(dataADDR,16))
     dataADDR-= RP_BASEADDRESS
-    print "datatype is: " + str(datatype)
+    print("datatype is: " + str(datatype))
     if (datatype=='w'): #write (one address, and then one value)
         dataVAL=recv_len(s,valLEN)
         return ['w',dataADDR,dataVAL]
@@ -76,4 +76,4 @@ def rcv_msg( s ):
     elif (datatype=='Q'):
         return ['Q']
     else:
-        print "FAIL"
+        print("FAIL")
