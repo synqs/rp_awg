@@ -1,6 +1,5 @@
 #!/bin/sh
-echo "argument is RedPitaya IP, of the form rp-XXXXXX.local, where XXXXXX are the last six digits of the RP MAC address, written on the device's ethernet port"
-echo "this code assumes that the login is root, which is essential for many of these operations. You will have to repeatedly enter the password (default is root)"
+echo "--- COPY ALL NECESSARY FILES; DISABLE SOME FEATURES; START SERVER ON RP ---"
 
 scp RPServer.py SimonLab_MDDS.bit JSocket.py root@$1:~
 scp rc.local root@$1:/etc/rc.local
