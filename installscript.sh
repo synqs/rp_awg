@@ -1,5 +1,5 @@
 #!/bin/sh
-echo Copy required files to RP
+echo "-----COPY REQUIRED FILES TO REDPITAYA-----"
 
 scp rp_files/RPServer.py root@$1:~
 scp rp_files/SimonLab_FIRVNA.bit root@$1:~

@@ -100,6 +100,12 @@ cmdstr=""
 for tARG in sys.argv:
     cmdstr=cmdstr+" "+tARG
 
+print('')
+print(sys.argv)
+print('')
+print(cmdstr)
+print('')
+
 #Extract Control Parameters
 REDPITAYA_IP = getparmval(cmdstr, "RP_IP","192.168.0.100")
 theshift = getparmval_int(cmdstr, "Outputshift","12")
