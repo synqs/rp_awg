@@ -1,9 +1,8 @@
-######################Updated February 1, 2017######################
-######################### by the SimonLab ##########################
-This is the readme for the RedPitaya (RP) realtime MDDS.
+# SimonLab's approach to use RP
 
-Included in this package are the following files:
+RedPitaya (RP) realtime MDDS by the SimonLab (lastly updated : February 1, 2017)
 
+## File overview
 CLIENT-SIDE (COMPUTER) FILES:
 >>SendFIR.py                 ---- Python 2.7 script to send DDS data to RP
 >>VNAScan.py                 ---- Python 2.7 script for simultaneous RP VNA
@@ -18,7 +17,7 @@ SERVER-SIDE (RP) FILES:
 >>FPGAreporter.py            ---- This is the pythonscript that performs the usage reporting
 
 
-###########################     SETUP  & TESTING   ###########################
+## SETUP  & TESTING 
 ==The RP should be configured to run the 0.96 RC1 stable build-- newer builds might be ok, but no guarantees. For information on preparing a memory card for the RP see: https://redpitaya.readthedocs.io/en/latest/
 
 ==The RP must be connected up to the same router as the computer that you intend to use to communicate with it. (This isn't strictly true, but otherwise the communication will require properly routing packets through the router).
