@@ -112,9 +112,7 @@ theshift = getparmval_int(cmdstr, "Outputshift","12")
 theprefactor = getparmval_int(cmdstr, "FIR_prescale","12345")
 filePath = getparmval(cmdstr, "FIR_coeffs","FIRcoeffs.csv")
 
-
 coefficients = get_CSV_data(filePath,[0])
-
 
 ##########################################################################################################!!!!!
 
