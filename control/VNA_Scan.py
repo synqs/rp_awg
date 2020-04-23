@@ -104,7 +104,7 @@ def getVNAdat():
     U=JSocket.read_mem(sock,VNAqahADDRESS)*(2**32)
     V=JSocket.read_mem(sock,VNAqalADDRESS)
     dat.append(extract_2c(U+V,64)) #Aq
-    
+
     U=JSocket.read_mem(sock,VNAibhADDRESS)*(2**32)
     V=JSocket.read_mem(sock,VNAiblADDRESS)
     dat.append(extract_2c(U+V,64)) #Bi
@@ -117,33 +117,33 @@ def getVNAdat():
 
 def freqscan( rp_ip, freqstart, freqstop, npts, pdBm, drivelocation, swpmode):
     ClockFreqHz=125000000.
-    
+
     if (swpmode=="linear"):
         df=(freqStop-freqStart)/float(npts-1.0)
         freqs=np.arange(freqStart,freqStop+.00001,df)
-        print "Sweep Mode: linear"
+        print("Sweep Mode: linear")
     else: #swpmode=="log"
         freqs=np.exp(np.arange(np.log(freqstart),np.log(freqstop)+.00001,np.log(freqstop/freqstart)/(npts-1.0)))
-        print "Sweep Mode: log"
+        print("Sweep Mode: log")
 
     p0dBm=-32.0 #calibration power for 0 bit shift!
     logampbits=np.floor((int(pdBm)-p0dBm)*(np.log(10.0)/np.log(2.0))/20.0)
     logamp = int(logampbits)
 
-    print "npts: " + str(npts)
-    print "freqStart: " + str(freqStart)
-    print "freqStop: " + str(freqStop)
-    print "amp shift: " + str(logamp)
-    
-    print "Connecting to Red Pitaya at IP address " + REDPITAYA_IP + " ......."
+    print("npts: " + str(npts))
+    print("freqStart: " + str(freqStart))
+    print("freqStop: " + str(freqStop))
+    print("amp shift: " + str(logamp))
+
+    print("Connecting to Red Pitaya at IP address " + REDPITAYA_IP + " .......")
 
     global sock
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # Connect the socket to the port where the server is listening
     server_address = (REDPITAYA_IP, 10000)
-    print >>sys.stderr, 'connecting to %s port %s' % server_address
+    print('connecting to %s port %s' % server_address, file=sys.stderr)
     sock.connect(server_address)
-    print "Connected!"
+    print("Connected!")
 
     JSocket.write_msg(sock,LEDADDRESS, 0)               #DAC/ADC behave better with LEDS off! WEIRD!
     sendpitaya(VNAampOUTADDRESS, logamp)
@@ -162,17 +162,17 @@ def freqscan( rp_ip, freqstart, freqstop, npts, pdBm, drivelocation, swpmode):
             adjFreqHz=freqs[ii+1]
         else:
             adjFreqHz=freqs[ii-1]
-        print curFreqHz
+        print(curFreqHz)
         df=abs(curFreqHz-adjFreqHz)
         avgbits=int(np.log(ClockFreqHz/df)/np.log(2.0))
         JSocket.write_msg(sock,VNAavgcoeffADDRESS, avgbits)
         JSocket.write_msg(sock,VNAftwADDRESS, int(curFreqHz/(125000000.0)*(2.0**32.)))
-        
+
         if ii==0:
             time.sleep(10.0/df)#wait long enough that the system can settle -- this is ~ 18 1/e times!!
         else:
             time.sleep(0.5/df)#wait long enough that the system can settle -- this is ~ 3 1/e times!!
-        
+
         dat=getVNAdat()
         scaleddat=[(1.0/((2.0**logamp)*(2.0**avgbits)))*dd for dd in dat]
         dats.append([curFreqHz,scaleddat,CHBVoltage])
@@ -180,7 +180,7 @@ def freqscan( rp_ip, freqstart, freqstop, npts, pdBm, drivelocation, swpmode):
     JSocket.write_msg(sock,VNAftwADDRESS, 0)
     sendpitaya(VNAampOUTADDRESS, -10) #more bits than DAC SINE table depth!
 
-    print "Voltage B:  " + str(CHBVoltage)
+    print("Voltage B:  " + str(CHBVoltage))
 
     return dats
 
@@ -216,39 +216,39 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
-   
+
 if __name__ == "__main__":
     if len(sys.argv)<2:
-        print ""
-        print ""
-        print ""
-        print bcolors.OKBLUE + "proper usage: " + bcolors.ENDC + "python FreqScan.py RP_IP=X.X.X.X Fstart_Hz=X Fstop_Hz=X ScanPts=X drivedBm=X ExcitePos=X MeasPosA=X MeasPosB=X SweepMode=X Outfile=X.csv"
-        print bcolors.OKBLUE + "example :     " + bcolors.ENDC + "python FreqScanNameVer.py RP_IP=192.168.1.142 Fstart_Hz=1000 Fstop_Hz=20000 ScanPts=500 DrivedBm=-32 ExcitePos=PreFIR MeasPosA=PreFIRPostDrive MeasPosB=PostFIRPreDrive SweepMode=log Outfile=outputdata.csv PlotMode=true"
-        print bcolors.OKBLUE + "DEFAULTS:     " + bcolors.ENDC + "RP_IP:192.168.0.100 Fstart_Hz=1000 Fstop_Hz=20000 ScanPts=100 DrivedBm=-32 ExcitePos=PreFIR MeasAPos=PreFIRPostDrive MeasBPos=PostFIRPreDrive SweepMode=log Outfile=outputdata.csv PlotMode=true"
-        print "RBW is set automatically to the allowed value closest to (fi-fi+1), for each datapoint"
-        print ""
-        print bcolors.OKBLUE + bcolors.BOLD + "ALLOWED INPUTS -- Descriptions" + bcolors.ENDC
-        print bcolors.FAIL + "ScanPts:" + bcolors.ENDC + "             10 to 10000  -- number of points in the scan"
-        print bcolors.FAIL + "Fstart_Hz, Fstop_Hz:" + bcolors.ENDC + " 10 to 100000 -- self explanatory"
-        print bcolors.FAIL + "DrivedBm:" + bcolors.ENDC + "            -56 to 8     -- -32dBm is the DDS internal amplitude"
-        print bcolors.FAIL + "SweepMode:" + bcolors.ENDC + "           linear or log"
-        print bcolors.FAIL + "ExcitePos:" + bcolors.ENDC + "           PreFIR, PostFIR"
-        print bcolors.FAIL + "MeasPosA/B:" + bcolors.ENDC + "          PreFIRPreDrive, PreFIRPostDrive, PostFIRPreDrive, PostFIRPostDrive"
-        print bcolors.FAIL + "OutFile:" + bcolors.ENDC + "             is the name of the file in the local directory where the output data goes!"
-        print bcolors.FAIL + "PlotMode:" + bcolors.ENDC + "            true, false; true means plot (B channel, I and Q) at the end"
-        print ""
-        print ""
-        print ""
+        print("")
+        print("")
+        print("")
+        print(bcolors.OKBLUE + "proper usage: " + bcolors.ENDC + "python FreqScan.py RP_IP=X.X.X.X Fstart_Hz=X Fstop_Hz=X ScanPts=X drivedBm=X ExcitePos=X MeasPosA=X MeasPosB=X SweepMode=X Outfile=X.csv")
+        print(bcolors.OKBLUE + "example :     " + bcolors.ENDC + "python FreqScanNameVer.py RP_IP=192.168.1.142 Fstart_Hz=1000 Fstop_Hz=20000 ScanPts=500 DrivedBm=-32 ExcitePos=PreFIR MeasPosA=PreFIRPostDrive MeasPosB=PostFIRPreDrive SweepMode=log Outfile=outputdata.csv PlotMode=true")
+        print(bcolors.OKBLUE + "DEFAULTS:     " + bcolors.ENDC + "RP_IP:192.168.0.100 Fstart_Hz=1000 Fstop_Hz=20000 ScanPts=100 DrivedBm=-32 ExcitePos=PreFIR MeasAPos=PreFIRPostDrive MeasBPos=PostFIRPreDrive SweepMode=log Outfile=outputdata.csv PlotMode=true")
+        print("RBW is set automatically to the allowed value closest to (fi-fi+1), for each datapoint")
+        print("")
+        print(bcolors.OKBLUE + bcolors.BOLD + "ALLOWED INPUTS -- Descriptions" + bcolors.ENDC)
+        print(bcolors.FAIL + "ScanPts:" + bcolors.ENDC + "             10 to 10000  -- number of points in the scan")
+        print(bcolors.FAIL + "Fstart_Hz, Fstop_Hz:" + bcolors.ENDC + " 10 to 100000 -- self explanatory")
+        print(bcolors.FAIL + "DrivedBm:" + bcolors.ENDC + "            -56 to 8     -- -32dBm is the DDS internal amplitude")
+        print(bcolors.FAIL + "SweepMode:" + bcolors.ENDC + "           linear or log")
+        print(bcolors.FAIL + "ExcitePos:" + bcolors.ENDC + "           PreFIR, PostFIR")
+        print(bcolors.FAIL + "MeasPosA/B:" + bcolors.ENDC + "          PreFIRPreDrive, PreFIRPostDrive, PostFIRPreDrive, PostFIRPostDrive")
+        print(bcolors.FAIL + "OutFile:" + bcolors.ENDC + "             is the name of the file in the local directory where the output data goes!")
+        print(bcolors.FAIL + "PlotMode:" + bcolors.ENDC + "            true, false; true means plot (B channel, I and Q) at the end")
+        print("")
+        print("")
+        print("")
         exit()
 
-    print ""
-    print ""
-    print "Preparing to Scan!"
+    print("")
+    print("")
+    print("Preparing to Scan!")
     cmdstr=""
     for tARG in sys.argv:
         cmdstr=cmdstr+" "+tARG
-    
-    #Extract Control Parameters    
+
+    #Extract Control Parameters
     REDPITAYA_IP = getparmval(cmdstr, "RP_IP","192.168.0.100")
     freqStart= int(getparmval(cmdstr, "Fstart_Hz","1000"))
     freqStop= int(getparmval(cmdstr, "Fstop_Hz","20000"))
@@ -260,12 +260,12 @@ if __name__ == "__main__":
     plotmode = getparmval(cmdstr, "PlotMode","false")
 
 
-    print "Drive/Measure Control Param: " + str(drivelocation)
-    print "Output Filename: " + outfilename
-    print "Plot Mode: " + plotmode
-    
+    print("Drive/Measure Control Param: " + str(drivelocation))
+    print("Output Filename: " + outfilename)
+    print("Plot Mode: " + plotmode)
+
     jdats=freqscan( REDPITAYA_IP, freqStart, freqStop, npts, pdBm, drivelocation, sweepmode)
- 
+
     JSocket.write_done(sock)
     sock.close()
 

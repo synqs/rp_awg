@@ -23,7 +23,7 @@ if RPVERSION:
 
     #ALL ADDRESSES SHOULD BE SENT LITTLE-ENDIAN!
     #DATA WILL BE WRITTEN INTO MEMORY EXACTLY AS SENT, SO IT IS INCUMENT ON WRITE COMMANDS TO GET THIS CORRECT
-        
+
 #  built on https://docs.python.org/2/howto/sockets.html
 
 # Create a TCP/IP socket
@@ -34,26 +34,26 @@ if RPVERSION:
 else:
     server_address = ("127.0.0.1", 10000)
 
-print >>sys.stderr, 'starting up on %s port %s' % server_address
+print('starting up on %s port %s' % server_address, file=sys.stderr)
 sock.bind(server_address)
 # Listen for incoming connections
 sock.listen(1)
 
 while True:
     # Wait for a connection
-    print >>sys.stderr, 'waiting for a connection'
+    print('waiting for a connection', file=sys.stderr)
     connection, client_address = sock.accept()
-    
+
     if bitfileloaded==False:
         os.system('cat /root/SimonLab_FIRVNA.bit > /dev/xdevcfg')
         bitfileloaded=True
     try:
-        print >>sys.stderr, 'connection from', client_address
+        print('connection from', client_address, file=sys.stderr)
         # Receive the data in small chunks and retransmit it
         while True:
             msg=rcv_msg(connection)
-            print "the message is:",
-            print msg
+            print("the message is:")
+            print(msg)
             if (msg[0]=='Q'):
                     break
             if RPVERSION:
@@ -63,13 +63,13 @@ while True:
 #                    m[msg[1]:msg[1]+len(msg[2])]=msg[2]
                 elif(msg[0]=='r'):
                     write_msg(connection,0,struct.unpack('<I',m[msg[1]:msg[1]+4])[0])
-                    print "the value is:"+str(struct.unpack('<I',m[msg[1]:msg[1]+4])[0])
+                    print( "the value is:"+str(struct.unpack('<I',m[msg[1]:msg[1]+4])[0]))
                 else:
-                    print "not implemented!"
-            print ""
-        print "\n\nclosing"
+                    print( "not implemented!")
+            print( "")
+        print( "\n\nclosing")
     except Exception:
-        print "Socket Closed Abruptly by Peer"
+        print( "Socket Closed Abruptly by Peer")
     finally:
         # Clean up the connection
         connection.close()
