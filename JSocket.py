@@ -25,19 +25,19 @@ def int2base(x,b,alphabet='0123456789abcdefghijklmnopqrstuvwxyz'):
     return rets
 
 def read_mem( s, addr ):
-    s.sendall('r'+struct.pack('<I',addr))
+    s.sendall(bytes('r', 'utf-8')+struct.pack('<I',addr))
     message=rcv_msg(s)
     return struct.unpack('<I',message[2])[0]
 
 def write_msg( s, addr, val ): #write one word (4 bytes)
-    s.sendall('w'+struct.pack('<I',addr)+struct.pack('<I',val))
+    s.sendall(bytes('w', 'utf-8')+struct.pack('<I',addr)+struct.pack('<I',val))
 
 def writeS_msg( s, addr, vals ): #write N words (4N bytes)-- vals is an array of words
-    v1='W'+struct.pack('<I',addr)+struct.pack('<I',4*len(vals))+struct.pack('<'+('I' * len(vals)), *vals)
+    v1=bytes('W', 'utf-8')+struct.pack('<I',addr)+struct.pack('<I',4*len(vals))+struct.pack('<'+('I' * len(vals)), *vals)
     s.sendall(v1)
 
 def write_done( s ):
-    s.sendall('Q    ')
+    s.sendall(bytes('Q    ', 'utf-8'))
 
 def recv_len(s,l): #receive data of length l from socket s
     data="";

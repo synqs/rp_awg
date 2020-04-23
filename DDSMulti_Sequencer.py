@@ -241,7 +241,7 @@ def SendDataToRP(REDPITAYA_IP, SOFTWARETRIGGER, CHs_DATA):
     if(DEBUGMODE==False):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # Connect the socket to the port where the server is listening
-        server_address = (REDPITAYA_IP, 10000)
+        server_address = (REDPITAYA_IP, 22)
         print('connecting to %s port %s' % server_address, file=sys.stderr)
         sock.connect(server_address)
         JSocket.write_msg(sock, LEDADDRESS, 0)               #DAC/ADC behave better with LEDS off! WEIRD!
