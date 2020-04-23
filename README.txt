@@ -1,18 +1,14 @@
 ######################Updated February 1, 2017######################
 ######################### by the SimonLab ##########################
-This is the readme for the RedPitaya (RP) realtime FIR (finite impulse response) filter with built-in VNA (vector network analyzer), as described in the simonlab publication: http://aip.scitation.org/doi/10.1063/1.4973470.
+This is the readme for the RedPitaya (RP) realtime MDDS.
 
 Included in this package are the following files:
 
 CLIENT-SIDE (COMPUTER) FILES:
->>SendFIR.py              ---- Python 2.7 script to send  FIR filter to the RP FPGA
+>>SendFIR.py                 ---- Python 2.7 script to send DDS data to RP
 >>VNAScan.py                 ---- Python 2.7 script for simultaneous RP VNA
 >>JSocket.py                 ---- Python 2.7 helper library for the preceding codes
 >>installscript              ---- Shell script (written for a macOS shell) that sends the necessary files to the RP, turns off unnecessary services, and starts the server
->>GenerateFilter.nb          ---- Sample Mathematica code for generating an FIR filter for sending to the RP.
->>MakePlot.nb                ---- Sample code for plotting the output of the VNA
->>time_coefficients_unit.csv ---- Sample FIR filter that produces a delta-function at time zero; this is the default that should be employed for initial testing!
->>time_coefficients.csv      ---- Sample FIR filter that produces the complex spectrum featured in the aforementioned publication; for debugging purposes.
 
 SERVER-SIDE (RP) FILES:
 >>JSocket.py                 ---- Same as above, but used on the RP for communication as well.
@@ -31,28 +27,14 @@ SERVER-SIDE (RP) FILES:
 
 ==Next, go to the directory where you have unzipped these files, and in the shell, type "./installscript.sh rpIP" (where rpIP is replaced with the IP/hostname ascertained above) This will send the necessary files and reconfigure the RedPitaya to act as the FIR filter and VNA. You will have to enter the password ("root") several times unless you have set up passwordless ssh with keygen. The RP is now configured and will load the correct bitfile and all relevant servers and status reporting programs on boot. Please power it down by unplugging it, and plug it back in (then wait a minute for it to boot) before proceeding.
 
-==To test out the FIR filter, we will set it to act as an impulse response with zero time delay. In the shell (in the directory of the unzipped files), run (with rpIP replaced with the actual IP address, as above):
-"python SendFIR.py FIR_coeffs=time_coefficients_unit.csv RP_IP=rpIP Outputshift=17 FIR_prescale=-91500"
+==To test out the MDDS, we will send it a test-script, and watch the output on a spectrum analyzer with START freq 0 MHz, and STOP freq 40 MHz. Connect OUT1 of the RP to your spectrum analyzer, and in the shell (in the directory of the unzipped files), run (with rpIP replaced with the actual IP address, as above):
+"python MDDS_Test.py RP_IP=rpIP SOFTWARETRIGGER=1"
 
-Now send a 500mVpp sinusoid (with no DC offset) at a few kHz into IN1 of the RP using a synthesizer, and measure OUT1 on an oscilloscope; you should see a sinusoid of amplitude 640mVpp. Alternatively, connect IN1 and OUT1 up to a commercial VNA and measure the flat frequency response with delay of ~2.6uS, up to ~125kHz.
+This should induce the RP to output 10 frequencies simultaneously (f_n=2*n MHz @ t=0), ramping to (f_n=4*n MHz @ t=4 seconds), and back @ t=8 seconds); the amplitudes should sweep as well.
 
-==Next we will implement a fancier impulse response function. Run (with rpIP replaced with the actual IP address, as above):
-"python SendFIR.py FIR_coeffs=time_coefficients.csv RP_IP=rpIP Outputshift=17 FIR_prescale=-91500"
+==To build your own script, simply copy MDDS_Test.py into a new file and modify it; the format of the data to be sent to the MDDS is explained within the .py file!
 
-Now send a 100mVpp sinusoid (with no DC offset) into IN1 of the RP using a synthesizer, and measure OUT1 on an oscilloscope; you should see a maximum response (pole) of ~610mVpp for a frequency of 3.340kHz, with a bandwidth (FWHM) of ~150Hz. Similarly, there should be a zero near 5.46kHz, and the next pole near 6.01kHz, with a bandwidth of 80Hz.Alternatively, connect IN1 and OUT1 up to a commercial VNA and measure the frequency and phase response, reproducing the data from the paper mentioned at the top of this README.
-
-
-==To test the VNA functionality, preconfigure the FIR filter as above, and now measure the 3.340kHz resonance of the FIR filter using one of the many modes of the VNA (with rpIP replaced with the actual IP address, as above):
-"python VNA_Scan.py RP_IP=rpIP Fstart_Hz=3000 Fstop_Hz=3600 ScanPts=100 DrivedBm=-48 ExcitePos=PreFIR MeasPosB=PreFIRPostDrive MeasPosA=PostFIRPostDrive SweepMode=linear Outfile=VNA_output.csv"
-
-Now VNA_output.csv contains the measured spectrum, in the form of the real and imaginary parts of the the measured signal at both MeasurementPositionA (before the FIR filter but after the noise injection point, in this case), and Measurement Position B (after the FIR filter, in this case). To read this data most conveniently, open and run "MakeVNAPlot.nb" in Mathematica (tested in Mathematica 11, but presumably broadly compatible.)
-
-If you would like to generate your own FIR filters, look in GenerateFilter.nb for sample code that produces a filter "tsequence.csv" which may be sent to the RP via the command (with rpIP replaced with the actual IP address, as above):
-
-"python SendFIR.py FIR_coeffs=tsequence.csv RP_IP=rpIP Outputshift=17 FIR_prescale=-91500"
-
+==To use the hardware triggering, simply replace "SOFTWARETRIGGER=1" with "SOFTWARETRIGGER=0", and supply a TTL trigger to the extension connector "DIO0_P" ("exp_p_in[0]" in the old RP notation) as defined in "http://redpitaya.readthedocs.io/en/latest/developerGuide/125-14/extent.html"
 NOTES:
-==FURTHER DOCUMENTATION FOR EACH OF THE PYTHON SCRIPTS IS AVAILABLE BY RUNNING IT WITHOUT PROVIDING ANY INPUTS
 ==The TCPIP server running on the RP is not terribly robust-- if you can no longer connect properly please power down the RP, power it back up, and try again.
-==installscript.sh disables all web-server functionality for the memory card in RP, and replaces all FPGA functionality; if you would like to use the standard configuration (oscilloscope, signal generator, AWG, etc...) prepare a separate memory card for this purpose.
-==The plotting routine in the python VNA is not operational. please use the mathematica code to plot.
+==installscript.sh disables all web-server functionality for the memory card in RP, and replaces all FPGA functionality; if you would like to use the standard configuration (oscilloscope, signal generator, AWG, etc...) prepare a separate memory card for this purpose
