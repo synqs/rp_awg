@@ -8,21 +8,21 @@ This is the readme for the RedPitaya (RP) realtime FIR (finite impulse response)
 ### File overview
 
 CLIENT-SIDE (COMPUTER) FILES:
-- SendFIR.py              \t Python 3 script to send  FIR filter to the RP FPGA
-- VNAScan.py                 \t Python 3 script for simultaneous RP VNA
-- JSocket.py                 \t Python 3 helper library for the preceding codes
-- installscript              \t Shell script (written for a macOS shell) that sends the necessary files to the RP, turns off unnecessary services, and starts the server
-- GenerateFilter.nb          \t Sample Mathematica code for generating an FIR filter for sending to the RP.
-- MakePlot.nb                \t Sample code for plotting the output of the VNA
-- time_coefficients_unit.csv \t Sample FIR filter that produces a delta-function at time zero; this is the default that should be employed for initial testing!
-- time_coefficients.csv      \t Sample FIR filter that produces the complex spectrum featured in the aforementioned publication; for debugging purposes.
+- SendFIR.py                  Python 3 script to send  FIR filter to the RP FPGA
+- VNAScan.py                  Python 3 script for simultaneous RP VNA
+- JSocket.py                  Python 3 helper library for the preceding codes
+- installscript               Shell script (written for a macOS shell) that sends the necessary files to the RP, turns off unnecessary services, and starts the server
+- GenerateFilter.nb           Sample Mathematica code for generating an FIR filter for sending to the RP.
+- MakePlot.nb                 Sample code for plotting the output of the VNA
+- time_coefficients_unit.csv  Sample FIR filter that produces a delta-function at time zero; this is the default that should be employed for initial testing!
+- time_coefficients.csv       Sample FIR filter that produces the complex spectrum featured in the aforementioned publication; for debugging purposes.
 
 SERVER-SIDE (RP) FILES:
-- JSocket.py                 \t Same as above, but used on the RP for communication as well.
-- RPServer.py                \t The TCP-IP server that runs on the RP to process requests from the client (computer).
-- SimonLab_FIRVNA.bit        \t This is the .bit file which is the heart of the device, and acts to configure the reconfigurable hardware of the FPGA within the RP.
-- rc.local                   \t This is the rc.local file that helps with usage reporting
-- FPGAreporter.py            \t This is the pythonscript that performs the usage reporting
+- JSocket.py                  Same as above, but used on the RP for communication as well.
+- RPServer.py                 The TCP-IP server that runs on the RP to process requests from the client (computer).
+- SimonLab_FIRVNA.bit         This is the .bit file which is the heart of the device, and acts to configure the reconfigurable hardware of the FPGA within the RP.
+- rc.local                    This is the rc.local file that helps with usage reporting
+- FPGAreporter.py             This is the pythonscript that performs the usage reporting
 
 
 ### Setup & testing
