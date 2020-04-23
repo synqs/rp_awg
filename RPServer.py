@@ -34,7 +34,7 @@ if RPVERSION:
 else:
     server_address = ("127.0.0.1", 10000)
 
-print(>>sys.stderr, 'starting up on %s port %s' % server_address
+print('starting up on %s port %s' % server_address, file=sys.stderr)
 sock.bind(server_address)
 # Listen for incoming connections
 sock.listen(1)
