@@ -1,6 +1,6 @@
 # SimonLab's approach to use RP
 
-RedPitaya (RP) realtime MDDS by the SimonLab (lastly updated : February 1, 2017)
+RedPitaya (RP) realtime MDDS, by the SimonLab (lastly updated : February 1, 2017)
 
 ## File overview
 CLIENT-SIDE (COMPUTER) FILES:
