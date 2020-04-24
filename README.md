@@ -4,17 +4,17 @@ RedPitaya (RP) realtime MDDS by the SimonLab (lastly updated : February 1, 2017)
 
 ## File overview
 CLIENT-SIDE (COMPUTER) FILES:
-- SendFIR.py                 ---- Python 3 script to send DDS data to RP
-- VNAScan.py                 ---- Python 3 script for simultaneous RP VNA
-- JSocket.py                 ---- Python 3 helper library for the preceding codes
-- installscript              ---- Shell script (written for a macOS shell) that sends the necessary files to the RP, turns off unnecessary services, and starts the server
+- SendFIR.py                 &rarr Python 3 script to send DDS data to RP
+- VNAScan.py                 &rarr Python 3 script for simultaneous RP VNA
+- JSocket.py                 &rarr Python 3 helper library for the preceding codes
+- installscript              &rarr Shell script (written for a macOS shell) that sends the necessary files to the RP, turns off unnecessary services, and starts the server
 
 SERVER-SIDE (RP) FILES:
-- JSocket.py                 ---- Same as above, but used on the RP for communication as well.
-- RPServer.py                ---- The TCP-IP server that runs on the RP to process requests from the client (computer).
-- SimonLab_FIRVNA.bit        ---- This is the .bit file which is the heart of the device, and acts to configure the reconfigurable hardware of the FPGA within the RP.
-- rc.local                   ---- This is the rc.local file that helps with usage reporting
-- FPGAreporter.py            ---- This is the pythonscript that performs the usage reporting
+- JSocket.py                 &rarr Same as above, but used on the RP for communication as well.
+- RPServer.py                &rarr The TCP-IP server that runs on the RP to process requests from the client (computer).
+- SimonLab_FIRVNA.bit        &rarr This is the .bit file which is the heart of the device, and acts to configure the reconfigurable hardware of the FPGA within the RP.
+- rc.local                   &rarr This is the rc.local file that helps with usage reporting
+- FPGAreporter.py            &rarr This is the pythonscript that performs the usage reporting
 
 
 ## SETUP  & TESTING
