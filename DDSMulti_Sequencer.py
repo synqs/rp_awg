@@ -130,12 +130,12 @@ def SendSeqToChannel (channel, IFfreq_hz, IFamp_frac,times_sec, freqs_hz, amps_f
     deltas_amp_frac.insert(0,amps_frac_c[0]-IFamp_frac_c)
 
     IF_FTW=HzToFTW(IFfreq_hz)
-    freqs_FTW=map(HzToFTW,freqs_hz)
+    freqs_FTW=list(map(HzToFTW,freqs_hz))
 
     deltas_FTW=[(freqs_FTW[i+1]-freqs_FTW[i]) for i in range(len(times_sec)-1)]
     deltas_FTW.insert(0,freqs_FTW[0]-IF_FTW)
 
-    times_cyc=map(SecToCycles,times_sec)
+    times_cyc=list(map(SecToCycles,times_sec))
 
     dt_cyc=[max(2,int(round(times_cyc[i+1]-times_cyc[i]))) for i in range(len(times_sec)-1)] #we use two cycles min, as the RAM might not be fast enough otherwise :(
     dt_cyc.insert(0,max(1,int(round(times_cyc[0]))))
