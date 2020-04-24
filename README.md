@@ -4,9 +4,9 @@ RedPitaya (RP) realtime MDDS by the SimonLab (lastly updated : February 1, 2017)
 
 ## File overview
 CLIENT-SIDE (COMPUTER) FILES:
-- SendFIR.py                 ---- Python 2.7 script to send DDS data to RP
-- VNAScan.py                 ---- Python 2.7 script for simultaneous RP VNA
-- JSocket.py                 ---- Python 2.7 helper library for the preceding codes
+- SendFIR.py                 ---- Python 3 script to send DDS data to RP
+- VNAScan.py                 ---- Python 3 script for simultaneous RP VNA
+- JSocket.py                 ---- Python 3 helper library for the preceding codes
 - installscript              ---- Shell script (written for a macOS shell) that sends the necessary files to the RP, turns off unnecessary services, and starts the server
 
 SERVER-SIDE (RP) FILES:
