@@ -10,6 +10,6 @@
 # bits.
 #
 # By default this script does nothing.
-python3 /usr/bin/FPGAreporter.py&
-python3 /root/RPServer.py&
+python /usr/bin/FPGAreporter.py&
+python /root/RPServer.py&
 exit 0
