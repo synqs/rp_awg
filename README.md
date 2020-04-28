@@ -32,7 +32,7 @@ RedPitaya (RP) realtime MDDS, by the SimonLab (lastly updated : February 1, 2017
 2. Please power it down by unplugging it, and plug it back in (then wait a minute for it to boot) before proceeding.
 
 3. To test out the MDDS, we will send it a test-script, and watch the output on a spectrum analyzer with START freq 0 MHz, and STOP freq 40 MHz. Connect OUT1 of the RP to your spectrum analyzer, and in the shell (in the directory of the unzipped files), run (with rpIP replaced with the actual IP address, as above):
-`python MDDS_Test.py RP_IP=rpIP SOFTWARETRIGGER=1`
+`python3 MDDS_Test.py RP_IP=rpIP SOFTWARETRIGGER=1`
 
 - This should induce the RP to output 10 frequencies simultaneously (f_n=2*n MHz @ t=0), ramping to (f_n=4*n MHz @ t=4 seconds), and back @ t=8 seconds); the amplitudes should sweep as well.
 
