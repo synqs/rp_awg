@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 echo "--- COPY ALL NECESSARY FILES; DISABLE SOME FEATURES; START SERVER ON RP ---"
 
 scp RPServer.py SimonLab_MDDS.bit JSocket.py root@$1:~

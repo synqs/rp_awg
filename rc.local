@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/sh -e
 #
 # rc.local
 #
@@ -11,6 +11,5 @@
 #
 # By default this script does nothing.
 print('rc.local')
-#python3 /usr/bin/FPGAreporter.py&
-python3 /root/RPServer.py&
+nohup python3 RPServer.py&
 exit 0
