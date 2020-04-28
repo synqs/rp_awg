@@ -12,7 +12,7 @@ RP_FPGARAMSIZE = 0x00800000
 
 RPVERSION=True
 
-#THIS SCRIPT ASSUMES THAT NGINX AND WYLIODRIN HAVE BEEN DISABLED, AND THE .bit file installed!
+#THIS SCRIPT ASSUMES THAT NGINX AND JUPYTER HAVE BEEN DISABLED, AND THE .bit file installed!
 #http://wiki.redpitaya.com/tmp/RedPitaya_HDL_memory_map.pdf
 
 bitfileloaded=False

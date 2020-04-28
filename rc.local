@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # rc.local
 #
@@ -10,6 +10,7 @@
 # bits.
 #
 # By default this script does nothing.
-python /usr/bin/FPGAreporter.py&
-python /root/RPServer.py&
+print('rc.local')
+#python3 /usr/bin/FPGAreporter.py&
+python3 /root/RPServer.py&
 exit 0
