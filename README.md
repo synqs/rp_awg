@@ -1,6 +1,7 @@
 # SimonLab's approach to use RP
 
 RedPitaya (RP) realtime MDDS, by the SimonLab (lastly updated : February 1, 2017)
+> http://simonlab.uchicago.edu/FPGA.html
 
 ## File overview
 **CLIENT-SIDE (COMPUTER) FILES:**
