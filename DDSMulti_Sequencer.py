@@ -244,7 +244,7 @@ def SendDataToRP(REDPITAYA_IP, SOFTWARETRIGGER, CHs_DATA):
         server_address = (REDPITAYA_IP, 22)
         print('connecting to %s port %s' % server_address, file=sys.stderr)
         sock.connect(server_address)
-        JSocket.write_msg(sock, LEDADDRESS, 0)               #DAC/ADC behave better with LEDS off! WEIRD!
+        JSocket.write_msg(sock, LEDADDRESS, 1)               #DAC/ADC behave better with LEDS off! WEIRD!
 
     SendFullSeqs(CHs_DATA)
 

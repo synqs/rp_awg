@@ -5,7 +5,8 @@ scp RPServer.py SimonLab_MDDS.bit JSocket.py root@$1:~
 scp rc.local root@$1:/etc/rc.local
 scp FPGAreporter.py root@$1:/usr/bin/FPGAreporter.py
 
-ssh root@$1 "systemctl disable redpitaya_nginx; systemctl disable redpitaya_scpi"
+#ssh root@$1 "systemctl disable redpitaya_nginx"
+ssh root@$1 "systemctl disable redpitaya_scpi"
 
 ssh root@$1 "chmod +x RPServer.py; chmod +x /usr/bin/FPGAreporter.py"
 

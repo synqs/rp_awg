@@ -24,6 +24,6 @@ SOFTWARETRIGGER = getparmval(cmdstr, "SOFTWARETRIGGER","1")
 
 #the next line of code generates the data for each of the 10 simultaneous DDS outputs. The format, for each channel, is:
 #[[f_initial in Hz, Amp_initial as fraction of max amplitude],[[time of end of first ramp, freq to ramp to, amplitude to ramp to],[time of end of second ramp, freq to ramp to, amplitude to ramp to],...]]
-CHs_DATA=[[[1000000,1],[[4.0,1000000,1]]]]
-
+CHs_DATA=[[[2e6,1],[[4.0,2e6,1]]] * NUMCHANNELS]
+print(CHs_DATA)
 DDSMulti_Sequencer.SendDataToRP(REDPITAYA_IP, SOFTWARETRIGGER=="1", CHs_DATA)
