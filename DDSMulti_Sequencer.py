@@ -167,31 +167,6 @@ def SendSeqToChannel (channel, IFfreq_hz, IFamp_frac,times_sec, freqs_hz, amps_f
         JSocket.write_msg(sock, DDSamp_IF_OFFSET,int(IF_ATW))#these must be sent as unsigned 32 bit numbers
         #print("IF_ATW: " +str(IF_ATW))
 
-def SendSequenceSimple (A_dat,B_dat): #dummy that takes data in the form A_dat=[IF_A_hz,[[t1_A_sec,f1_A_hz],[t2_A_sec_,f2_A_hz]...]], and then the same thing for B_dat
-    IFfreqA_hz=A_dat[0][0]
-    IFampA_frac=A_dat[0][1]
-    timesA_sec = [d[0] for d in A_dat[1]]
-    freqsA_hz  = [d[1] for d in A_dat[1]]
-    ampsA_frac = [d[2] for d in A_dat[1]]
-
-    IFfreqB_hz  = B_dat[0][0]
-    IFampB_frac = B_dat[0][1]
-    timesB_sec  = [d[0] for d in B_dat[1]]
-    freqsB_hz   = [d[1] for d in B_dat[1]]
-    ampsB_frac  = [d[2] for d in B_dat[1]]
-
-    #SendSeqToChannel (1,IFfreqB_hz, timesB_sec, freqsB_hz)
-
-    SendSeqToChannel (1,IFfreqB_hz,IFampB_frac, timesB_sec, freqsB_hz, ampsB_frac)
-    SendSeqToChannel (0,IFfreqA_hz,IFampA_frac, timesA_sec, freqsA_hz, ampsA_frac)
-
-    #reset the RP FSM and prepare it for a trigger!
-    JSocket.write_msg(sock, DDSawaittrigger_OFFSET,0)#value sent doesn't affect anything
-
-
-    if SWTrigger:  #if enabled, give it a software trigger!
-        JSocket.write_msg(sock, DDSsoftwaretrigger_OFFSET,0)#value sent doesn't affect anything
-
 def SendFullSeqs( AllSeqs ):
     #the data for each channel is an element of AllSeqs, sent as follows:
         #[[IFfreq_Hz,IFamp_frac],[[time_sec,freq_Hz,amp_frac]]]
@@ -240,8 +215,9 @@ def SendDataToRP(REDPITAYA_IP, SOFTWARETRIGGER, CHs_DATA):
 
     if(DEBUGMODE==False):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         # Connect the socket to the port where the server is listening
-        server_address = (REDPITAYA_IP, 22)
+        server_address = (REDPITAYA_IP, 10000)
         print('connecting to %s port %s' % server_address, file=sys.stderr)
         sock.connect(server_address)
         JSocket.write_msg(sock, LEDADDRESS, 0)               #DAC/ADC behave better with LEDS off! WEIRD!

@@ -40,40 +40,41 @@ def write_done( s ):
     s.sendall(bytes('Q    ', 'utf-8'))
 
 def recv_len(s,l): #receive data of length l from socket s
-    data="";
+    data=bytes("", 'utf-8');
     lremaining=l;
     while(lremaining>0):
         newdat=s.recv(lremaining)
-        if newdat=="":
+        if newdat==bytes("", 'utf-8'):
             print("disconnected!")
             raise Exception('Socket Closed!')
         data+=newdat
         lremaining=l-len(data)
-    return(data)
+    return data
 
 def rcv_msg( s ):
     #DO THESE THINGS BLOCK PROPERLY!?!
     addrLEN   =4 #four-byte address should be more than enough!
     valLEN    =4 #all values are four bytes, because that is our address step anyway!
     listlenLEN=4 #four bytes to describe length of list (in bytes) to follow!
-    datatype=recv_len(s,1)[0]
+    datatype=recv_len(s,1)
     dataADDR,=struct.unpack('<I',recv_len(s,addrLEN))
     print("dataADDR is: 0x" + int2base(dataADDR,16))
-    dataADDR-= RP_BASEADDRESS
-    print("datatype is: " + str(datatype))
-    if (datatype=='w'): #write (one address, and then one value)
+    dataADDR -= 1073741824
+    print("datatype is: ", datatype)
+
+    if (datatype==b'w'): #write (one address, and then one value)
         dataVAL=recv_len(s,valLEN)
-        return ['w',dataADDR,dataVAL]
-    elif (datatype=='r'): #read (one address)
-        return ['r',dataADDR]
-    elif (datatype=='W'): #write (start address, numbytes, bytelist)
+        return [b'w',dataADDR,dataVAL]
+    elif (datatype==b'r'): #read (one address)
+        return [b'r',dataADDR]
+    elif (datatype==b'W'): #write (start address, numbytes, bytelist)
         dataLEN,=struct.unpack('<I',recv_len(s,listlenLEN))
         dataLIST=recv_len(s,dataLEN)
-        return ['W',dataADDR,dataLIST]
-    elif (datatype=='R'): #read (start address, numbytes)
+        return [b'W',dataADDR,dataLIST]
+    elif (datatype==b'R'): #read (start address, numbytes)
         dataLEN,=struct.unpack('<I',recv_len(s,listlenLEN))
-        return ['R',dataADDR,dataLEN]
-    elif (datatype=='Q'):
-        return ['Q']
+        return [b'R',dataADDR,dataLEN]
+    elif (datatype==b'Q'):
+        return [b'Q']
     else:
         print("FAIL")

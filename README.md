@@ -5,17 +5,15 @@ RedPitaya (RP) realtime MDDS, by the SimonLab (lastly updated : February 1, 2017
 
 ## File overview
 **CLIENT-SIDE (COMPUTER) FILES:**
-- SendFIR.py                 - Python 3 script to send DDS data to RP
-- VNAScan.py                 - Python 3 script for simultaneous RP VNA
-- JSocket.py                 - Python 3 helper library for the preceding codes
-- installscript              - Shell script (written for a macOS shell) that sends the necessary files to the RP, turns off unnecessary services, and starts the server
+- DDSMulti_Sequencer.py -> Python 3 script to send data to RP
+- MDDS_Test.py -> Python 3 script for testing (here you can configure signal)
+- JSocket.py -> Python 3 helper library for the preceding codes
+- installscript -> Shell script (written for a macOS shell) that sends the necessary files to the RP, turns off unnecessary services, and starts the server
 
 **SERVER-SIDE (RP) FILES:**
-- JSocket.py                 - Same as above, but used on the RP for communication as well.
-- RPServer.py                - The TCP-IP server that runs on the RP to process requests from the client (computer).
-- SimonLab_FIRVNA.bit        - This is the .bit file which is the heart of the device, and acts to configure the reconfigurable hardware of the FPGA within the RP.
-- rc.local                   - This is the rc.local file that helps with usage reporting
-- FPGAreporter.py            - This is the pythonscript that performs the usage reporting
+- JSocket.py -> Same as above, but used on the RP for communication as well.
+- RPServer.py -> The TCP-IP server that runs on the RP to process requests from the client (computer).
+- SimonLab_MDDS.bit -> This is the .bit file which is the heart of the device, and acts to configure the reconfigurable hardware of the FPGA within the RP
 
 
 ## SETUP  & TESTING
@@ -29,15 +27,10 @@ RedPitaya (RP) realtime MDDS, by the SimonLab (lastly updated : February 1, 2017
 ## Testing
 1. Next, go to the directory where you have unzipped these files, and in the shell, type `./installscript.sh rpIP` (where rpIP is replaced with the IP/hostname ascertained above)
 
-2. Please power it down by unplugging it, and plug it back in (then wait a minute for it to boot) before proceeding.
-
-3. To test out the MDDS, we will send it a test-script, and watch the output on a spectrum analyzer with START freq 0 MHz, and STOP freq 40 MHz. Connect OUT1 of the RP to your spectrum analyzer, and in the shell (in the directory of the unzipped files), run (with rpIP replaced with the actual IP address, as above):
-`python3 MDDS_Test.py RP_IP=rpIP SOFTWARETRIGGER=1`
-
-- To build your own script, simply copy MDDS_Test.py into a new file and modify it; the format of the data to be sent to the MDDS is explained within the .py file!
-
-- To use the hardware triggering, simply replace "SOFTWARETRIGGER=1" with "SOFTWARETRIGGER=0", and supply a TTL trigger to the extension connector "DIO0_P" ("exp_p_in[0]" in the old RP notation) as defined in "http://redpitaya.readthedocs.io/en/latest/developerGuide/125-14/extent.html"
+2. To test out the MDDS, connect OUT1 of the RP to your spectrum analyzer, and in the shell (in the directory of the unzipped files), run (with rpIP replaced with the actual IP address, as above):
+`python3 MDDS_Test.py rpIP`
 
 ## NOTES:
+- To build your own script, simply copy MDDS_Test.py into a new file and modify it; the format of the data to be sent to the MDDS is explained within the .py file!
 - The TCPIP server running on the RP is not terribly robust-- if you can no longer connect properly please power down the RP, power it back up, and try again.
 - installscript.sh disables all web-server functionality for the memory card in RP, and replaces all FPGA functionality; if you would like to use the standard configuration (oscilloscope, signal generator, AWG, etc...) prepare a separate memory card for this purpose
