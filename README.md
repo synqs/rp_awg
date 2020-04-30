@@ -24,7 +24,7 @@ RedPitaya (RP) realtime MDDS, by the SimonLab (lastly updated : February 1, 2017
 
 - The next step is to be certain that you can communicate between your computer and the redpitaya. Find the redpitaya's IP address by checking "Network manager" on the web-based application menu in your browser (rp-XXXXXX.local/ where XXXXXX is the last six digits of the MAC address) or by using terminal commands. To test the communication, ssh into the RP: in the shell, type `ssh root@rpIP`, and enter "root" as your password
 
-## Testing
+### Testing
 1. Next, go to the directory where you have unzipped these files, and in the shell, type `./installscript.sh rpIP` (where rpIP is replaced with the IP/hostname ascertained above)
 
 2. To test out the MDDS, connect OUT1 of the RP to your spectrum analyzer, and in the shell (in the directory of the unzipped files), run (with rpIP replaced with the actual IP address, as above):
