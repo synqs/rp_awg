@@ -26,8 +26,6 @@ if RPVERSION:
     #ALL ADDRESSES SHOULD BE SENT LITTLE-ENDIAN!
     #DATA WILL BE WRITTEN INTO MEMORY EXACTLY AS SENT, SO IT IS INCUMENT ON WRITE COMMANDS TO GET THIS CORRECT
 
-#  built on https://docs.python.org/2/howto/sockets.html
-
 # Create a TCP/IP socket & Bind the socket to the port
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -44,6 +42,7 @@ while True:
     connection, client_address = sock.accept()
     print(connection)
 
+
     if bitfileloaded==False:
         os.system('cat /root/SimonLab_MDDS.bit > /dev/xdevcfg')
         bitfileloaded=True
@@ -54,8 +53,12 @@ while True:
             msg=rcv_msg(connection)
             print("\nthe message is:",)
             print(msg)
+            if (msg[0]==b'K'):
+                print('okay, then bye....')
+                connection.close()
+                os.system("reboot")
             if (msg[0]==b'Q'):
-                    break
+                break
             if RPVERSION:
                 if ((msg[0]==b'w') or (msg[0]=='W')):
                     for kk in range(int(len(msg[2])/4)):
@@ -74,4 +77,5 @@ while True:
         print("Socket Closed Abruptly by Peer")
     finally:
         # Clean up the connection
+        print('Finally')
         connection.close()

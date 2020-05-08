@@ -8,12 +8,13 @@ RedPitaya (RP) realtime MDDS, by the SimonLab (lastly updated : February 1, 2017
 - DDSMulti_Sequencer.py -> Python 3 script to send data to RP
 - MDDS_Test.py -> Python 3 script for testing (here you can configure signal)
 - JSocket.py -> Python 3 helper library for the preceding codes
-- installscript -> Shell script (written for a macOS shell) that sends the necessary files to the RP, turns off unnecessary services, and starts the server
+- installscript -> Shell script that sends the necessary files to the RP, turns off unnecessary services, and starts the server
 
 **SERVER-SIDE (RP) FILES:**
 - JSocket.py -> Same as above, but used on the RP for communication as well.
 - RPServer.py -> The TCP-IP server that runs on the RP to process requests from the client (computer).
 - SimonLab_MDDS.bit -> This is the .bit file which is the heart of the device, and acts to configure the reconfigurable hardware of the FPGA within the RP
+- rc.local -> Helps the RP to keep the Server running
 
 
 ## SETUP  & TESTING
@@ -28,9 +29,9 @@ RedPitaya (RP) realtime MDDS, by the SimonLab (lastly updated : February 1, 2017
 1. Next, go to the directory where you have unzipped these files, and in the shell, type `./installscript.sh rpIP` (where rpIP is replaced with the IP/hostname ascertained above)
 
 2. To test out the MDDS, connect OUT1 of the RP to your spectrum analyzer, and in the shell (in the directory of the unzipped files), run (with rpIP replaced with the actual IP address, as above):
-`python3 MDDS_Test.py rpIP`
+`python3 MDDS_Test.py RP_IP=rpRP SOFTWARETRIGGER='1/0' REBOOT='1/0'`,
+whereas the default values are SOFTWARETRIGGER=1 and REBOOT=0. Rebooting cleans up the connection thoroughly and restarts the server, which might come in handy if one wants to do some debugging or recoding.
 
 ## NOTES:
-- To build your own script, simply copy MDDS_Test.py into a new file and modify it; the format of the data to be sent to the MDDS is explained within the .py file!
-- The TCPIP server running on the RP is not terribly robust-- if you can no longer connect properly please power down the RP, power it back up, and try again.
-- installscript.sh disables all web-server functionality for the memory card in RP, and replaces all FPGA functionality; if you would like to use the standard configuration (oscilloscope, signal generator, AWG, etc...) prepare a separate memory card for this purpose
+- To build your own script, simply copy MDDS_Test.py into a new file and modify it; the format of the data to be sent to the MDDS is explained within the .py file, or change the 'CHs_DATA' sequence in this file directly
+- installscript.sh disables all web-server functionality for the memory card in RP, and replaces all FPGA functionality; if you would like to use the standard configuration (oscilloscope, signal generator, AWG, etc...) prepare a separate memory card for this purpose, however one can still access oscilloscope, spectrum analyzer etc. functionality by using Pyrpl (https://pyrpl.readthedocs.io/en/latest/index.html)

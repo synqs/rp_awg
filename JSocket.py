@@ -39,6 +39,9 @@ def writeS_msg( s, addr, vals ): #write N words (4N bytes)-- vals is an array of
 def write_done( s ):
     s.sendall(bytes('Q    ', 'utf-8'))
 
+def kill_all( s ):
+    s.sendall(bytes('K    ', 'utf-8'))
+
 def recv_len(s,l): #receive data of length l from socket s
     data=bytes("", 'utf-8');
     lremaining=l;
@@ -76,5 +79,7 @@ def rcv_msg( s ):
         return [b'R',dataADDR,dataLEN]
     elif (datatype==b'Q'):
         return [b'Q']
+    elif (datatype==b'K'):
+        return [b'K']
     else:
         print("FAIL")

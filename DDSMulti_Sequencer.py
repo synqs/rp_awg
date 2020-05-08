@@ -203,7 +203,7 @@ SWTrigger=True
 DEBUGMODE=False
 sock = 0
 
-def SendDataToRP(REDPITAYA_IP, SOFTWARETRIGGER, CHs_DATA):
+def SendDataToRP(REDPITAYA_IP, SOFTWARETRIGGER, CHs_DATA, REBOOT):
 
     global DEBUGMODE
     global sock
@@ -224,6 +224,11 @@ def SendDataToRP(REDPITAYA_IP, SOFTWARETRIGGER, CHs_DATA):
 
     SendFullSeqs(CHs_DATA)
 
-    if(DEBUGMODE==False):
+    if(REBOOT=='True'):
+        print('KILL!!!!')
+        JSocket.kill_all(sock)
+        sock.close()
+
+    elif(DEBUGMODE==False):
         JSocket.write_done(sock)
         sock.close()
