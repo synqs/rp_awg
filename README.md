@@ -11,8 +11,8 @@ RedPitaya (RP) realtime MDDS, by the SimonLab (lastly updated : February 1, 2017
 - installscript -> Shell script that sends the necessary files to the RP, turns off unnecessary services, and starts the server
 
 **SERVER-SIDE (RP) FILES:**
-- JSocket.py -> Same as above, but used on the RP for communication as well.
-- RPServer.py -> The TCP-IP server that runs on the RP to process requests from the client (computer).
+- JSocket.py -> Same as above, but used on the RP for communication as well
+- RPServer.py -> The TCP-IP server that runs on the RP to process requests from the client (computer)
 - SimonLab_MDDS.bit -> This is the .bit file which is the heart of the device, and acts to configure the reconfigurable hardware of the FPGA within the RP
 - rc.local -> Helps the RP to keep the Server running
 
