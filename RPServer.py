@@ -10,7 +10,7 @@ from JSocket import *
 
 RP_BASEADDRESS = 0x40000000
 RP_FPGARAMSIZE = 0x00800000
-
+PORT = 10000
 RPVERSION=True
 
 #THIS SCRIPT ASSUMES THAT NGINX AND JUPYTER HAVE BEEN DISABLED, AND THE .bit file installed!
@@ -29,7 +29,7 @@ if RPVERSION:
 # Create a TCP/IP socket & Bind the socket to the port
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-server_address = (socket.gethostname(), 10000)
+server_address = (socket.gethostname(), PORT)
 print('starting up on %s port %s' % server_address, file=sys.stderr)
 sock.bind(server_address)
 
@@ -56,7 +56,7 @@ while True:
             if (msg[0]==b'K'):
                 print('okay, then bye....')
                 connection.close()
-                os.system("reboot")
+                os.system("fuser -k "+str(PORT)+"/tcp && reboot")
             if (msg[0]==b'Q'):
                 break
             if RPVERSION:

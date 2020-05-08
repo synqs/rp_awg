@@ -30,8 +30,9 @@ RedPitaya (RP) realtime MDDS, by the SimonLab (lastly updated : February 1, 2017
 
 2. To test out the MDDS, connect OUT1 of the RP to your spectrum analyzer, and in the shell (in the directory of the unzipped files), run (with rpIP replaced with the actual IP address, as above):
 `python3 MDDS_Test.py RP_IP=rpRP SOFTWARETRIGGER='1/0' REBOOT='1/0'`,
-whereas the default values are SOFTWARETRIGGER=1 and REBOOT=0. Rebooting cleans up the connection thoroughly and restarts the server, which might come in handy if one wants to do some debugging or recoding.
+whereas the default values are SOFTWARETRIGGER=1 and REBOOT=0. Rebooting cleans up the connection thoroughly and restarts the server, which might come in handy if one wants to do some debugging or recoding (**important** : see Notes).
 
 ## NOTES:
+- If rebooting is enabled, one has to ssh into the RP at least once, before again sending a frequency sequence to it (will hopefully be improved in the future)
 - To build your own script, simply copy MDDS_Test.py into a new file and modify it; the format of the data to be sent to the MDDS is explained within the .py file, or change the 'CHs_DATA' sequence in this file directly
 - installscript.sh disables all web-server functionality for the memory card in RP, and replaces all FPGA functionality; if you would like to use the standard configuration (oscilloscope, signal generator, AWG, etc...) prepare a separate memory card for this purpose, however one can still access oscilloscope, spectrum analyzer etc. functionality by using Pyrpl (https://pyrpl.readthedocs.io/en/latest/index.html)

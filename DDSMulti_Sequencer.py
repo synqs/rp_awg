@@ -227,8 +227,8 @@ def SendDataToRP(REDPITAYA_IP, SOFTWARETRIGGER, CHs_DATA, REBOOT):
     if(REBOOT=='1'):
         print('KILL!!!!')
         JSocket.kill_all(sock)
-        sock.close()
 
     elif(DEBUGMODE==False):
         JSocket.write_done(sock)
-        sock.close()
+
+    sock.close()
