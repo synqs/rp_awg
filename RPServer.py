@@ -63,7 +63,6 @@ while True:
                 if ((msg[0]==b'w') or (msg[0]=='W')):
                     for kk in range(int(len(msg[2])/4)):
                         m[msg[1]+4*kk:msg[1]+4*kk+4]=msg[2][4*kk:4*kk+4]
-#                    m[msg[1]:msg[1]+len(msg[2])]=msg[2]
                 elif(msg[0]==b'r'):
                     write_msg(connection,0,struct.unpack('<I',m[msg[1]:msg[1]+4])[0])
                     print("the value is:"+str(struct.unpack('<I',m[msg[1]:msg[1]+4])[0]))
@@ -79,4 +78,3 @@ while True:
         # Clean up the connection
         print('Finally')
         connection.close()
-        os.system("fuser -k "+str(PORT)+"/tcp")
