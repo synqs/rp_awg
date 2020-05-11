@@ -79,3 +79,4 @@ while True:
         # Clean up the connection
         print('Finally')
         connection.close()
+        os.system("fuser -k "+str(PORT)+"/tcp")
