@@ -32,10 +32,6 @@ def read_mem( s, addr ):
 def write_msg( s, addr, val ): #write one word (4 bytes)
     s.sendall(bytes('w', 'utf-8')+struct.pack('<I',addr)+struct.pack('<I',val))
 
-def writeS_msg( s, addr, vals ): #write N words (4N bytes)-- vals is an array of words
-    v1=bytes('W', 'utf-8')+struct.pack('<I',addr)+struct.pack('<I',4*len(vals))+struct.pack('<'+('I' * len(vals)), *vals)
-    s.sendall(v1)
-
 def write_done( s ):
     s.sendall(bytes('Q    ', 'utf-8'))
 

@@ -42,7 +42,6 @@ while True:
     connection, client_address = sock.accept()
     print(connection)
 
-
     if bitfileloaded==False:
         os.system('cat /root/SimonLab_MDDS.bit > /dev/xdevcfg')
         bitfileloaded=True
@@ -60,7 +59,7 @@ while True:
             if (msg[0]==b'Q'):
                 break
             if RPVERSION:
-                if ((msg[0]==b'w') or (msg[0]=='W')):
+                if (msg[0]==b'w'):
                     for kk in range(int(len(msg[2])/4)):
                         m[msg[1]+4*kk:msg[1]+4*kk+4]=msg[2][4*kk:4*kk+4]
                 elif(msg[0]==b'r'):
