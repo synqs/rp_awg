@@ -50,8 +50,9 @@ while True:
         # Receive the data in small chunks and retransmit it
         while True:
             msg=rcv_msg(connection)
-            print("\nthe message is:",)
-            print(msg)
+            if (msg[1] == 3145728): print('---------------------------------CHANNEL')
+            print("\nthe message is:",msg)
+            print("dataADDR offset is:" + hex(msg[1]))
             if (msg[0]==b'K'):
                 print('okay, then bye....')
                 connection.close()
@@ -59,7 +60,7 @@ while True:
             if (msg[0]==b'Q'):
                 break
             if RPVERSION:
-                if (msg[0]==b'w'):
+                if ((msg[0]==b'w') or (msg[0]==b'W')):
                     for kk in range(int(len(msg[2])/4)):
                         m[msg[1]+4*kk:msg[1]+4*kk+4]=msg[2][4*kk:4*kk+4]
                 elif(msg[0]==b'r'):

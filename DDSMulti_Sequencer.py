@@ -84,18 +84,18 @@ LEDADDRESS              =0x40000030    #address in FPGA memory map to control RP
 
 maxevents                  =   64*16
 
-DDS_CHANNEL_OFFSET          = 1076887552+4*0                  #offset in WORDS (4 bytes) to the channel that we are currently writing to!
-DDSawaittrigger_OFFSET      = 1076887552+4*24                 #offset in WORDS (4 bytes) to address where we write ANYTHING to tell system to reset and await trigger
-DDSsoftwaretrigger_OFFSET   = 1076887552+4*25                 #offset in WORDS (4 bytes) to address where we write ANYTHING to give the system a software trigger!
-DDSftw_IF_OFFSET            = 1076887552+4*1                  #offset in WORDS (4 bytes) to the initial/final FTW for the current channel
-DDSamp_IF_OFFSET            = 1076887552+4*3                  #offset in WORDS (4 bytes) to the initial/final amp for the current channel
-DDSsamples_OFFSET           = 1076887552+4*2                  #offset in WORDS (4 bytes) to # of samples for the current channel
+DDS_CHANNEL_OFFSET          = 1076887552+4*0    #0x40300000 #offset in WORDS (4 bytes) to the channel that we are currently writing to!
+DDSawaittrigger_OFFSET      = 1076887552+4*24   #0x40300060 #offset in WORDS (4 bytes) to address where we write ANYTHING to tell system to reset and await trigger
+DDSsoftwaretrigger_OFFSET   = 1076887552+4*25   #0x40300064 #offset in WORDS (4 bytes) to address where we write ANYTHING to give the system a software trigger!
+DDSftw_IF_OFFSET            = 1076887552+4*1    #0x40300004 #offset in WORDS (4 bytes) to the initial/final FTW for the current channel
+DDSamp_IF_OFFSET            = 1076887552+4*3    #0x4030000c #offset in WORDS (4 bytes) to the initial/final amp for the current channel
+DDSsamples_OFFSET           = 1076887552+4*2    #0x40300008 #offset in WORDS (4 bytes) to # of samples for the current channel
 
 ####EXPECT LOW WORD AT LOWER MEMORY ADDRESS FOR FREQS (FTW) RAMS! ###
-DDSfreqs_OFFSET            = 1076887552+4*40                      #offset in WORDS to the first element of the current freq list
-DDScycles_OFFSET           = DDSfreqs_OFFSET  + 4*maxevents*2     #offset in WORDS to the first element of the current cyc. list
-DDSamps_OFFSET             = DDScycles_OFFSET + 4*maxevents*1     #offset in WORDS to the first element of the current cyc. list
-DDSamps_last_OFFSET        = DDScycles_OFFSET + 4*maxevents*2 - 1 #offset in WORDS to the last  element of the current cyc. list
+DDSfreqs_OFFSET            = 1076887552+4*40                      #0x403000a0 #offset in WORDS to the first element of the current freq list
+DDScycles_OFFSET           = DDSfreqs_OFFSET  + 4*maxevents*2     #0x403020a0 #offset in WORDS to the first element of the current cyc. list
+DDSamps_OFFSET             = DDScycles_OFFSET + 4*maxevents*1     #0x403010a0 #offset in WORDS to the first element of the current cyc. list
+DDSamps_last_OFFSET        = DDScycles_OFFSET + 4*maxevents*2 - 1 #0x4030209f #offset in WORDS to the last  element of the current cyc. list
 
 maxsendlen=31*512  #most FIR coefficients we can send at a time
 fclk_Hz=125*(10**6) #redpitaya clock frequency
@@ -179,6 +179,7 @@ def SendFullSeqs( AllSeqs ):
         else:
             curdat=[[0.0,0.0],[[.0001,0.0,0.0]]]
 
+        print(curdat)
         IFfreq_Hz  = curdat[0][0]
         IFamp_frac = curdat[0][1]
         times_sec  = [curdat[1][k][0] for k in range(len(curdat[1]))]
@@ -220,7 +221,7 @@ def SendDataToRP(REDPITAYA_IP, SOFTWARETRIGGER, CHs_DATA, REBOOT):
         server_address = (REDPITAYA_IP, 10000)
         print('connecting to %s port %s' % server_address, file=sys.stderr)
         sock.connect(server_address)
-        
+
     SendFullSeqs(CHs_DATA)
 
     if(REBOOT=='1'):

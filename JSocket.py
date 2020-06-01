@@ -32,6 +32,9 @@ def read_mem( s, addr ):
 def write_msg( s, addr, val ): #write one word (4 bytes)
     s.sendall(bytes('w', 'utf-8')+struct.pack('<I',addr)+struct.pack('<I',val))
 
+def writeS_msg( s, addr, val ): #write one word (4 bytes)
+    s.sendall(bytes('W', 'utf-8')+struct.pack('<I',addr)+struct.pack('<I',val))
+
 def write_done( s ):
     s.sendall(bytes('Q    ', 'utf-8'))
 
@@ -57,9 +60,7 @@ def rcv_msg( s ):
     listlenLEN=4 #four bytes to describe length of list (in bytes) to follow!
     datatype=recv_len(s,1)
     dataADDR,=struct.unpack('<I',recv_len(s,addrLEN))
-    print("dataADDR is: 0x" + int2base(dataADDR,16))
     dataADDR -= 1073741824
-    print("datatype is: ", datatype)
 
     if (datatype==b'w'): #write (one address, and then one value)
         dataVAL=recv_len(s,valLEN)
