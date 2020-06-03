@@ -3,6 +3,14 @@ import struct
 
 RP_BASEADDRESS = 0x40000000
 
+def get_ip():
+    ip_address = '';
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8",80))
+    ip_address = s.getsockname()[0]
+    s.close()
+    return ip_address
+
 def int2base(x,b,alphabet='0123456789abcdefghijklmnopqrstuvwxyz'):
     'convert an integer to its string representation in a given base'
     if b<2 or b>len(alphabet):

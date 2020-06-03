@@ -7,4 +7,6 @@ scp RPServer.py SimonLab_MDDS.bit JSocket.py root@$1:~
 scp rc.local root@$1:/etc/rc.local
 
 ssh root@$1 "systemctl disable redpitaya_nginx && systemctl disable redpitaya_scpi && systemctl disable jupyter"
+# ssh root@$1 "echo 'nohup python3 /root/RPServer.py < /dev/null  > /dev/null 2>&1 &' >> ~/.bashrc"
+
 ssh root@$1 "nohup python3 /root/RPServer.py < /dev/null  > /dev/null 2>&1 &"
