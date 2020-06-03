@@ -1,9 +1,3 @@
-"""
-Last modified 2/19/2017
-Written by Jon
-Send to RP
-"""
-
 import socket
 import JSocket
 from struct import pack, unpack
@@ -144,10 +138,6 @@ def SendSeqToChannel (channel, IFfreq_hz, IFamp_frac,times_sec, freqs_hz, amps_f
     da_ATW=[int(round((2.0**(32+DDSamp_fracbits))*deltas_amp_frac[i]/dt_cyc[i])) for i in range(len(dt_cyc))]
 
     if(DEBUGMODE==False):
-        #print("Length of dt_cyc: " + str(len(dt_cyc)))
-        #print("Length of df_FTW: " + str(len(df_FTW)))
-        #print("IFamp: " +str(IFamp_frac))
-
         #set the channel that we are writing to!
         JSocket.write_msg(sock, DDS_CHANNEL_OFFSET,channel)
 
@@ -165,7 +155,6 @@ def SendSeqToChannel (channel, IFfreq_hz, IFamp_frac,times_sec, freqs_hz, amps_f
         #send the I/F values of the  channel
         JSocket.write_msg(sock, DDSftw_IF_OFFSET,int(IF_FTW))#these must be sent as unsigned 32 bit numbers
         JSocket.write_msg(sock, DDSamp_IF_OFFSET,int(IF_ATW))#these must be sent as unsigned 32 bit numbers
-        #print("IF_ATW: " +str(IF_ATW))
 
 def SendFullSeqs( AllSeqs ):
     #the data for each channel is an element of AllSeqs, sent as follows:

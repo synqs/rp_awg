@@ -27,7 +27,7 @@ REBOOT = getparmval(cmdstr, "REBOOT","0")
 
 #the next line of code generates the data for each of the 10 simultaneous DDS outputs. The format, for each channel, is:
 #[[f_initial in Hz, Amp_initial as fraction of max amplitude],[[time of end of first ramp, freq to ramp to, amplitude to ramp to],[time of end of second ramp, freq to ramp to, amplitude to ramp to],...]]
-CHs_DATA=[      [[5e6, 0.75], [[0, 5e6, 0.75]]] #ch0
+CHs_DATA=[      [[5e6, 1], [[0, 5e6, 1]]] #ch0
                 # [[10e6, 1.00], [[0.0, 10e6, 1.00]]], #ch1
                 # [[15e6, 1.00], [[0.0, 15e6, 1.00]]], #ch2
                 # [[25e6, 1.00], [[0.0, 25e6, 1.00]]], #ch4

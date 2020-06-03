@@ -30,6 +30,7 @@ if RPVERSION:
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 server_address = (socket.gethostbyname(socket.gethostname()), PORT) # Get real IP Adress and not just hostname
+print(socket.getfqdn())
 print('starting up on %s port %s' % server_address, file=sys.stderr)
 sock.bind(server_address)
 

@@ -26,7 +26,7 @@ RedPitaya (RP) realtime MDDS, by the SimonLab (lastly updated : February 1, 2017
 - The next step is to be certain that you can communicate between your computer and the redpitaya. Find the redpitaya's IP address by checking "Network manager" on the web-based application menu in your browser (rp-XXXXXX.local/ where XXXXXX is the last six digits of the MAC address) or by using terminal commands. To test the communication, ssh into the RP: in the shell, type `ssh root@rpIP`, and enter "root" as your password
 
 ### Testing
-1. Be sure to generate an SSH key beforehand so the RP will accept your commands etc. without asking everytime for you passwort. For this type `ssh-keygen -t rsa -b 2048` in yout terminal and hit <kbd>Enter</kbd> a couple of times...
+1. Be sure to generate an SSH key beforehand so the RP will accept your commands etc. without asking everytime for you password. For this type `ssh-keygen -t rsa -b 2048` in yout terminal and hit <kbd>Enter</kbd> a couple of times...
 
 2. Next, go to the directory where you have unzipped these files, and in the shell, type `./installscript.sh rpIP` (where rpIP is replaced with the IP/hostname ascertained above)
 
