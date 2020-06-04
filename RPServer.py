@@ -44,7 +44,7 @@ while True:
     print(connection)
 
     if bitfileloaded==False:
-        os.system('cat /root/SimonLab_MDDS.bit > /dev/xdevcfg')
+        os.system('cat /root/MDDS.bit > /dev/xdevcfg')
         bitfileloaded=True
     try:
         print('connection from', client_address, file=sys.stderr)
