@@ -38,6 +38,6 @@ CHs_DATA=[      [[10e6, 0.25], [[0, 10e6, 0.25]]] #ch0
                 # [[45e6, 0], [[0, 45e6, 0]]], #ch8
                 # [[50e6, 0], [[0, 50e6, 0]]]  #ch9
                     ]
-# CHs_DATA=[[[k*5e6,1],[[0,k*5e6,1]]] for k in range(NUMCHANNELS)]
+
 os.system("ssh root@"+REDPITAYA_IP+" 'nohup python3 /root/RPServer.py < /dev/null  > /dev/null 2>&1 &'")
 DDSMulti_Sequencer.SendDataToRP(REDPITAYA_IP, SOFTWARETRIGGER, CHs_DATA, REBOOT)
